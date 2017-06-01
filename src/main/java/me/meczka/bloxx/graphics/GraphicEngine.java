@@ -174,7 +174,7 @@ public class GraphicEngine extends GameCore implements MouseListener,MouseMotion
             }
         }
 
-
+        //kolko
         sprites[1].setX((int)((screen.getWidth()/2*Math.cos(sprites[1].getRotation()*Math.PI/180))+screen.getWidth()/2-halfSizeBlok));
         sprites[1].setY((int)((screen.getHeight()/2*Math.sin(sprites[1].getRotation() *Math.PI/180))+screen.getHeight()/2-screen.getHeight()/2-halfSizeBlok));
 
