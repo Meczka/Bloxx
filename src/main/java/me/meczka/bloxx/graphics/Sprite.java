@@ -4,8 +4,14 @@ import java.awt.Image;
 
 public class Sprite {
 	private int x, y,velX,velY,rotation;
+	private boolean isYVectored,isXVectored;
+	public static final int X = 0,Y = 1,BOTH = 2;
 	Image image;
 	public Sprite(int x,int y,int rotation,Image image)
+	{
+		this(x,y,rotation,image,true,true);
+	}
+	public Sprite(int x,int y,int rotation,Image image,boolean isXVectored,boolean isYVectored)
 	{
 		this.x=x;
 		this.y=y;
@@ -13,6 +19,8 @@ public class Sprite {
 		velY=0;
 		this.image=image;
 		this.rotation=rotation;
+		this.isXVectored=isXVectored;
+		this.isYVectored=isYVectored;
 	}
 	public void setVelocityX(int velX)
 	{
@@ -61,6 +69,40 @@ public class Sprite {
 	public void setRotation(int rotation)
 	{
 		this.rotation=rotation;
+	}
+	public boolean isVectored(int xory)
+	{
+		switch (xory)
+		{
+			case X:
+				return isXVectored;
+			case Y:
+				return isYVectored;
+			case BOTH:
+				return (isYVectored==true&&isXVectored==true);
+			default:
+				return false;
+		}
+	}
+	public void setVectored(int xory,boolean value)
+	{
+		switch (xory)
+		{
+			case X: {
+				isXVectored = value;
+				break;
+			}
+			case Y: {
+				isYVectored = value;
+				break;
+			}
+			case BOTH:
+			{
+				isXVectored=value;
+				isYVectored=value;
+				break;
+			}
+		}
 	}
 	
 }

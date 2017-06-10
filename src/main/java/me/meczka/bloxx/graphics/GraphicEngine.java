@@ -21,22 +21,29 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.geom.AffineTransform;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 import javax.swing.ImageIcon;
 
 import me.meczka.bloxx.core.GameCore;
+import net.coobird.thumbnailator.Thumbnails;
+import net.coobird.thumbnailator.filters.*;
+import net.coobird.thumbnailator.filters.Canvas;
+import net.coobird.thumbnailator.geometry.Positions;
 
 
 public class GraphicEngine extends GameCore implements MouseListener,MouseMotionListener {
 
 
     private Sprite[] sprites;
-    private int angle = 90;
-    private Image blok, slup;
+    private final int angle = 90;
+    private Image blok, chain;
     private boolean goingUp=false;
-    private int circleRadius;
+    private int circleDiameter;
     //finals
-    private final int SPRITES = 2;
+    private final int SPRITES = 3;
     private final String IMAGEPATH="E:\\programimage";
     private final int halfSizeBlok = 50;
 
@@ -52,24 +59,42 @@ public class GraphicEngine extends GameCore implements MouseListener,MouseMotion
         window.addMouseListener(this);
         window.addMouseMotionListener(this);
         sprites = new Sprite[SPRITES];
+        circleDiameter=screen.getWidth()/2;
         loadImages();
         loadSprites();
-        circleRadius=screen.getWidth()/2;
+
         goingUp=true;
     }
 
 
-    public void loadSprites()
-    {
+    public void loadSprites(){
         sprites[0] = new Sprite(screen.getWidth()/2-blok.getWidth(null), screen.getHeight()-blok.getHeight(null),0, blok);
-        sprites[1] = new Sprite((int)((screen.getWidth()/2*Math.cos(angle*Math.PI/180))+screen.getWidth()/2-halfSizeBlok), (int)((screen.getHeight()/2*Math.sin(angle *Math.PI/180))+screen.getHeight()/2-screen.getHeight()/2-halfSizeBlok),angle, blok);
-        //	sprites[2] = new Sprite((int)screen.getWidth()/2-slup.getWidth(null)/2,(int)screen.getHeight()/4-slup.getHeight(null)/2,angle,slup);
+        sprites[1] = new Sprite((int)((circleDiameter/2*Math.cos(angle*Math.PI/180))+screen.getWidth()/2-halfSizeBlok),
+                (int)((circleDiameter/2*Math.sin(angle*Math.PI/180))-screen.getHeight()/4+circleDiameter/2-halfSizeBlok),
+                angle, blok,false,true);
+        int chainSize = circleDiameter;
+        loadImagesPhase2(chainSize);
+
+        sprites[2] = new Sprite(screen.getWidth()/2-chain.getWidth(null)/2,
+                (chainSize/2-screen.getHeight()/4)-chain.getHeight(null)/2,
+                angle,chain,false,false);
+
 
     }
     public void loadImages()
     {
         blok = loadImage(IMAGEPATH+"\\blok.png");
-        slup = loadImage(IMAGEPATH + "\\s�up.png");
+
+    }
+    public void loadImagesPhase2(int chainSize)
+    {
+        try {
+            chain = Thumbnails.of(new File(IMAGEPATH+"\\chain.png"))
+                    .size(chainSize,292)
+                    .asBufferedImage();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
     public Image loadImage(String fileName)
     {
@@ -111,13 +136,23 @@ public class GraphicEngine extends GameCore implements MouseListener,MouseMotion
 
 
     public void mouseReleased(MouseEvent e) {
-        // TODO Auto-generated method stub
+
 
     }
+
+    public void StartFalling()
+    {
+
+    }
+
+
+
 
     public void draw(Graphics2D g) {
         g.setColor(Color.GRAY);
         g.fillRect(0, 0, screen.getWidth(), screen.getHeight());
+
+       //drawing sprites
         for(int i=0;i<sprites.length;i++)
         {
             if(sprites[i].getRotation()!=0)
@@ -134,9 +169,13 @@ public class GraphicEngine extends GameCore implements MouseListener,MouseMotion
                 g.drawImage(sprites[i].getImage(), sprites[i].getX(),sprites[i].getY(),null);
             }
         }
+
+
+
+
         g.setColor(Color.BLACK);
 
-        g.drawOval(screen.getWidth()/2-circleRadius/2, -screen.getHeight()/4, circleRadius,circleRadius);
+        g.drawOval(screen.getWidth()/2-circleDiameter/2, -screen.getHeight()/4, circleDiameter,circleDiameter);
 
 
 
@@ -156,7 +195,7 @@ public class GraphicEngine extends GameCore implements MouseListener,MouseMotion
             if(sprites[1].getRotation()!=110)
             {
                 sprites[1].setRotation(sprites[1].getRotation()+1);
-                //sprites[2].setRotation(sprites[1].getRotation());
+                sprites[2].setRotation(sprites[2].getRotation()+1);
             }
             else
             {
@@ -168,6 +207,7 @@ public class GraphicEngine extends GameCore implements MouseListener,MouseMotion
             if(sprites[1].getRotation()!=70)
             {
                 sprites[1].setRotation(sprites[1].getRotation()-1);
+                sprites[2].setRotation(sprites[2].getRotation()-1);
             }
             else
             {
@@ -176,10 +216,19 @@ public class GraphicEngine extends GameCore implements MouseListener,MouseMotion
         }
 
         //kolko
-        sprites[1].setX((int)((circleRadius/2*Math.cos(sprites[1].getRotation()*Math.PI/180))+screen.getWidth()/2-halfSizeBlok));
-        sprites[1].setY((int)((circleRadius/2*Math.sin(sprites[1].getRotation()*Math.PI/180))-screen.getHeight()/4+circleRadius/2-halfSizeBlok));
-
-
+        sprites[1].setX((int)((circleDiameter/2*Math.cos(sprites[1].getRotation()*Math.PI/180))+screen.getWidth()/2-halfSizeBlok));
+        sprites[1].setY((int)((circleDiameter/2*Math.sin(sprites[1].getRotation()*Math.PI/180))-screen.getHeight()/4+circleDiameter/2-halfSizeBlok));
+        for(int i=0;i<sprites.length;i++)
+        {
+            if(sprites[i].isVectored(Sprite.X))
+            {
+                sprites[i].setX((int) (sprites[i].getX()+sprites[i].getVelocityX()*elapsedTime));
+            }
+            if(sprites[i].isVectored(Sprite.Y))
+            {
+                sprites[i].setY((int) (sprites[i].getY()+sprites[i].getVelocityY()*elapsedTime));
+            }
+        }
     }
 }
 
