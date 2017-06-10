@@ -24,13 +24,13 @@ public class GraphicEngine extends GameCore implements MouseListener,MouseMotion
     private Collisions collisions;
     private final int angle = 90;
     private Image blok, chain;
-    private boolean goingUp=false,isFalling=false;
+    private boolean goingUp=false;
     private int circleDiameter;
     //finals
     private final int SPRITES = 3;
     public final static int BLOKSIZE = 100;
     private final String IMAGEPATH="E:\\programimage";
-    private final int halfSizeBlok = 50;
+    public final static int halfSizeBlok = 50;
 
     public static void main(String[] args)
     {
@@ -47,7 +47,7 @@ public class GraphicEngine extends GameCore implements MouseListener,MouseMotion
         circleDiameter=screen.getWidth()/2;
         loadImages();
         loadSprites();
-        collisions= new Collisions();
+        collisions= new Collisions(screen.getWidth(),screen.getHeight(),circleDiameter);
         goingUp=true;
     }
 
@@ -69,8 +69,8 @@ public class GraphicEngine extends GameCore implements MouseListener,MouseMotion
     public void loadImages()
     {
         blok = loadImage(IMAGEPATH+"\\blok.png");
-
     }
+
     public void loadImagesPhase2(int chainSize)
     {
         try {
@@ -130,7 +130,7 @@ public class GraphicEngine extends GameCore implements MouseListener,MouseMotion
         sprites[1].setRotating(false);
         sprites[1].setVectored(Sprite.Y,true);
         sprites[1].setVelocityY(1);
-        isFalling=true;
+        collisions.setFalling(true);
     }
 
 
@@ -196,7 +196,7 @@ public class GraphicEngine extends GameCore implements MouseListener,MouseMotion
 
 
         //kolko
-        if(!isFalling) {
+        if(!collisions.isFalling()) {
             sprites[1].setX((int) ((circleDiameter / 2 * Math.cos(sprites[1].getRotation() * Math.PI / 180)) + screen.getWidth() / 2 - halfSizeBlok));
             sprites[1].setY((int) ((circleDiameter / 2 * Math.sin(sprites[1].getRotation() * Math.PI / 180)) - screen.getHeight() / 4 + circleDiameter / 2 - halfSizeBlok));
         }
