@@ -64,6 +64,6 @@ public abstract  class GameCore {
 		isRunning = false;
 	}
 	
-	public void update(long elapsedTime){}
+	public synchronized void update(long elapsedTime){}
 	public abstract void draw(Graphics2D g);
 }
