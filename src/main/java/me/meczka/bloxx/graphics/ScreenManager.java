@@ -76,8 +76,8 @@ public class ScreenManager {
                 strategy.show();
             }
         }
-        // Operacja Sync, dzia³aj¹ca w niektórych systemach
-        // (w systemie Linux naprawia problem z kolejk¹ zdarzeñ).
+        // Operacja Sync, dziaï¿½ajï¿½ca w niektï¿½rych systemach
+        // (w systemie Linux naprawia problem z kolejkï¿½ zdarzeï¿½).
         Toolkit.getDefaultToolkit().sync();
     }
 	public void restoreScreen() {
@@ -88,8 +88,8 @@ public class ScreenManager {
         device.setFullScreenWindow(null);
     }
 	/**
-    Zwraca szerokoœæ okna u¿ytego obecnie w trybie pe³noekranowym.
-    Zwraca 0, je¿eli urz¹dzenie nie jest w trybie pe³noekranowym.
+    Zwraca szerokoï¿½ï¿½ okna uï¿½ytego obecnie w trybie peï¿½noekranowym.
+    Zwraca 0, jeï¿½eli urzÄ…dzenie nie jest w trybie peï¿½noekranowym.
 */
 public int getWidth() {
     Window window = device.getFullScreenWindow();
@@ -103,8 +103,8 @@ public int getWidth() {
 
 
 /**A
-    Zwraca wysokoœæ okna u¿ytego obecnie w trybie pe³noekranowym.
-    Zwraca 0, je¿eli urz¹dzenie nie jest w trybie pe³noekranowym.
+    Zwraca wysokoï¿½ï¿½ okna uï¿½ytego obecnie w trybie peï¿½noekranowym.
+    Zwraca 0, jeï¿½eli urzï¿½dzenie nie jest w trybie peï¿½noekranowym.
 */
 public int getHeight() {
     Window window = device.getFullScreenWindow();

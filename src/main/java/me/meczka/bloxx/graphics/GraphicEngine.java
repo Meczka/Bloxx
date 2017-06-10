@@ -34,11 +34,10 @@ public class GraphicEngine extends GameCore implements MouseListener,MouseMotion
     private int angle = 90;
     private Image blok, slup;
     private boolean goingUp=false;
-
+    private int circleRadius;
     //finals
     private final int SPRITES = 2;
     private final String IMAGEPATH="E:\\programimage";
-    private final double screenDividedBy =1.5;
     private final int halfSizeBlok = 50;
 
     public static void main(String[] args)
@@ -48,12 +47,14 @@ public class GraphicEngine extends GameCore implements MouseListener,MouseMotion
     public void init()
     {
         super.init();
+
         Window window = screen.getFullScreenWindow();
         window.addMouseListener(this);
         window.addMouseMotionListener(this);
         sprites = new Sprite[SPRITES];
         loadImages();
         loadSprites();
+        circleRadius=screen.getWidth()/2;
         goingUp=true;
     }
 
@@ -135,7 +136,7 @@ public class GraphicEngine extends GameCore implements MouseListener,MouseMotion
         }
         g.setColor(Color.BLACK);
 
-        g.drawOval(0, 0, screen.getHeight()/2,(int)screen.getHeight()/2);
+        g.drawOval(screen.getWidth()/2-circleRadius/2, -screen.getHeight()/4, circleRadius,circleRadius);
 
 
 
@@ -149,7 +150,7 @@ public class GraphicEngine extends GameCore implements MouseListener,MouseMotion
     @Override
     public void update(long elapsedTime)
     {
-        //Aktualizacja K�ta
+        //Aktualizacja Kąta
         if(goingUp)
         {
             if(sprites[1].getRotation()!=110)
@@ -175,8 +176,8 @@ public class GraphicEngine extends GameCore implements MouseListener,MouseMotion
         }
 
         //kolko
-        sprites[1].setX((int)((screen.getWidth()/2*Math.cos(sprites[1].getRotation()*Math.PI/180))+screen.getWidth()/2-halfSizeBlok));
-        sprites[1].setY((int)((screen.getHeight()/2*Math.sin(sprites[1].getRotation() *Math.PI/180))+screen.getHeight()/2-screen.getHeight()/2-halfSizeBlok));
+        sprites[1].setX((int)((circleRadius/2*Math.cos(sprites[1].getRotation()*Math.PI/180))+screen.getWidth()/2-halfSizeBlok));
+        sprites[1].setY((int)((circleRadius/2*Math.sin(sprites[1].getRotation()*Math.PI/180))-screen.getHeight()/4+circleRadius/2-halfSizeBlok));
 
 
     }
