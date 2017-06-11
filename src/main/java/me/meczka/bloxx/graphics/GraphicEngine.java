@@ -27,7 +27,7 @@ public class GraphicEngine extends GameCore implements MouseListener,MouseMotion
     private boolean goingUp=false;
     private int circleDiameter;
     //finals
-    private final int SPRITES = 3;
+    private final int SPRITES = 5;
     public final static int BLOKSIZE = 100;
     private final String IMAGEPATH="E:\\programimage";
     public final static int halfSizeBlok = 50;
@@ -47,20 +47,20 @@ public class GraphicEngine extends GameCore implements MouseListener,MouseMotion
         circleDiameter=screen.getWidth()/2;
         loadImages();
         loadSprites();
-        collisions= new Collisions(screen.getWidth(),screen.getHeight(),circleDiameter);
+        collisions= new Collisions(screen.getWidth(),screen.getHeight());
         goingUp=true;
     }
 
 
     public void loadSprites(){
-        sprites[0] = new Sprite(screen.getWidth()/2-blok.getWidth(null), screen.getHeight()-blok.getHeight(null),0, blok);
-        sprites[1] = new Sprite((int)((circleDiameter/2*Math.cos(angle*Math.PI/180))+screen.getWidth()/2-halfSizeBlok),
+        sprites[2] = new Sprite(screen.getWidth()/2-blok.getWidth(null), screen.getHeight()-blok.getHeight(null),0, blok);
+        sprites[0] = new Sprite((int)((circleDiameter/2*Math.cos(angle*Math.PI/180))+screen.getWidth()/2-halfSizeBlok),
                 (int)((circleDiameter/2*Math.sin(angle*Math.PI/180))-screen.getHeight()/4+circleDiameter/2-halfSizeBlok),
                 angle, blok,false,false,true);
         int chainSize = circleDiameter;
         loadImagesPhase2(chainSize);
 
-        sprites[2] = new Sprite(screen.getWidth()/2-chain.getWidth(null)/2,
+        sprites[1] = new Sprite(screen.getWidth()/2-chain.getWidth(null)/2,
                 (chainSize/2-screen.getHeight()/4)-chain.getHeight(null)/2,
                 angle,chain,false,false,true);
 
@@ -127,9 +127,9 @@ public class GraphicEngine extends GameCore implements MouseListener,MouseMotion
 
     public void StartFalling()
     {
-        sprites[1].setRotating(false);
-        sprites[1].setVectored(Sprite.Y,true);
-        sprites[1].setVelocityY(1);
+        sprites[0].setRotating(false);
+        sprites[0].setVectored(Sprite.Y,true);
+        sprites[0].setVelocityY(1);
         collisions.setFalling(true);
     }
 
@@ -143,18 +143,17 @@ public class GraphicEngine extends GameCore implements MouseListener,MouseMotion
        //drawing sprites
         for(int i=0;i<sprites.length;i++)
         {
-            if(sprites[i].isRotating())
-            {
-                AffineTransform backup = g.getTransform();
-                AffineTransform trans = new AffineTransform();
-                trans.rotate(Math.toRadians(sprites[i].getRotation()), sprites[i].getX()+sprites[i].getImage().getWidth(null)/2,sprites[i].getY()+sprites[i].getImage().getHeight(null)/2);
-                g.setTransform(trans);
-                g.drawImage(sprites[i].getImage(),sprites[i].getX(),sprites[i].getY(), null);
-                g.setTransform(backup);
-            }
-            else
-            {
-                g.drawImage(sprites[i].getImage(), sprites[i].getX(),sprites[i].getY(),null);
+            if(sprites[i]!=null) {
+                if (sprites[i].isRotating()) {
+                    AffineTransform backup = g.getTransform();
+                    AffineTransform trans = new AffineTransform();
+                    trans.rotate(Math.toRadians(sprites[i].getRotation()), sprites[i].getX() + sprites[i].getImage().getWidth(null) / 2, sprites[i].getY() + sprites[i].getImage().getHeight(null) / 2);
+                    g.setTransform(trans);
+                    g.drawImage(sprites[i].getImage(), sprites[i].getX(), sprites[i].getY(), null);
+                    g.setTransform(backup);
+                } else {
+                    g.drawImage(sprites[i].getImage(), sprites[i].getX(), sprites[i].getY(), null);
+                }
             }
         }
 
@@ -167,7 +166,7 @@ public class GraphicEngine extends GameCore implements MouseListener,MouseMotion
 
 
 
-        //trans.translate(sprites[1].getX(), sprites[1].getY());
+        //trans.translate(sprites[0].getX(), sprites[0].getY());
 
 
 
@@ -179,16 +178,16 @@ public class GraphicEngine extends GameCore implements MouseListener,MouseMotion
     {
         //Aktualizacja Kąta
         if (goingUp) {
-            if (sprites[1].getRotation() != 110) {
+            if (sprites[0].getRotation() != 110) {
+                sprites[0].setRotation(sprites[0].getRotation() + 1);
                 sprites[1].setRotation(sprites[1].getRotation() + 1);
-                sprites[2].setRotation(sprites[2].getRotation() + 1);
             } else {
                 goingUp = false;
             }
         } else {
-            if (sprites[1].getRotation() != 70) {
+            if (sprites[0].getRotation() != 70) {
+                sprites[0].setRotation(sprites[0].getRotation() - 1);
                 sprites[1].setRotation(sprites[1].getRotation() - 1);
-                sprites[2].setRotation(sprites[2].getRotation() - 1);
             } else {
                 goingUp = true;
             }
@@ -197,24 +196,29 @@ public class GraphicEngine extends GameCore implements MouseListener,MouseMotion
 
         //kolko
         if(!collisions.isFalling()) {
-            sprites[1].setX((int) ((circleDiameter / 2 * Math.cos(sprites[1].getRotation() * Math.PI / 180)) + screen.getWidth() / 2 - halfSizeBlok));
-            sprites[1].setY((int) ((circleDiameter / 2 * Math.sin(sprites[1].getRotation() * Math.PI / 180)) - screen.getHeight() / 4 + circleDiameter / 2 - halfSizeBlok));
-        }
-        for(int i=0;i<sprites.length;i++)
-        {
-            if(sprites[i].isVectored(Sprite.X))
-            {
-                sprites[i].setX((int) (sprites[i].getX()+sprites[i].getVelocityX()*elapsedTime));
-            }
-            if(sprites[i].isVectored(Sprite.Y))
-            {
-                sprites[i].setY((int) (sprites[i].getY()+sprites[i].getVelocityY()*elapsedTime));
-            }
+            sprites[0].setX((int) ((circleDiameter / 2 * Math.cos(sprites[0].getRotation() * Math.PI / 180)) + screen.getWidth() / 2 - halfSizeBlok));
+            sprites[0].setY((int) ((circleDiameter / 2 * Math.sin(sprites[0].getRotation() * Math.PI / 180)) - screen.getHeight() / 4 + circleDiameter / 2 - halfSizeBlok));
         }
 
 
         //Wykrywanie Kolizji
         collisions.check(sprites);
+
+
+        for(int i=0;i<sprites.length;i++)
+        {
+            if(sprites[i]!=null) {
+                if (sprites[i].isVectored(Sprite.X)) {
+                    sprites[i].setX((int) (sprites[i].getX() + sprites[i].getVelocityX() * elapsedTime));
+                }
+                if (sprites[i].isVectored(Sprite.Y)) {
+                    sprites[i].setY((int) (sprites[i].getY() + sprites[i].getVelocityY() * elapsedTime));
+                }
+            }
+        }
+
+
+
 
     }
 }
