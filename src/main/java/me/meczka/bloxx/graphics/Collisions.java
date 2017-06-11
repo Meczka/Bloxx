@@ -17,15 +17,17 @@ public class Collisions {
     {
         if(movingDown)
         {
-            if(sprites[blocksDown].getY()>screenheight-GraphicEngine.BLOKSIZE)
+            if(sprites[blocksDown-1].getY()>screenheight-GraphicEngine.BLOKSIZE*2)
             {
                 movingDown=false;
                 for(int i=2;i<=blocksDown;i++) {
                     sprites[i].setVelocityY(0);
                 }
-                sprites[blocksDown].setY(screenheight-GraphicEngine.BLOKSIZE);
-                cloneBlock(sprites,blocksDown,2);
-                blocksDown=2;
+                sprites[blocksDown].setY(screenheight-GraphicEngine.BLOKSIZE*2);
+                sprites[blocksDown-1].setY(screenheight-GraphicEngine.BLOKSIZE);
+                cloneBlock(sprites,blocksDown,3);
+                cloneBlock(sprites,blocksDown-1,2);
+                blocksDown=3;
             }
 
         }
