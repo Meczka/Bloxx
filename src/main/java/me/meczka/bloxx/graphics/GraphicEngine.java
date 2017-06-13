@@ -30,6 +30,7 @@ public class GraphicEngine extends GameCore implements MouseListener,MouseMotion
     private final int SPRITES = 5;
     public final static int BLOKSIZE = 100;
     private final String IMAGEPATH="E:\\programimage";
+    private final double rotationSpeed=1;
     public final static int halfSizeBlok = 50;
 
     public static void main(String[] args)
@@ -53,7 +54,7 @@ public class GraphicEngine extends GameCore implements MouseListener,MouseMotion
 
 
     public void loadSprites(){
-        sprites[2] = new Sprite(screen.getWidth()/2-blok.getWidth(null), screen.getHeight()-blok.getHeight(null),0, blok);
+        sprites[2] = new Sprite(screen.getWidth()/2-halfSizeBlok, screen.getHeight()-blok.getHeight(null),0, blok);
         sprites[0] = new Sprite((int)((circleDiameter/2*Math.cos(angle*Math.PI/180))+screen.getWidth()/2-halfSizeBlok),
                 (int)((circleDiameter/2*Math.sin(angle*Math.PI/180))-screen.getHeight()/4+circleDiameter/2-halfSizeBlok),
                 angle, blok,false,false,true);
@@ -179,15 +180,15 @@ public class GraphicEngine extends GameCore implements MouseListener,MouseMotion
         //Aktualizacja Kąta
         if (goingUp) {
             if (sprites[0].getRotation() <= 110) {
-                sprites[0].setRotation(sprites[0].getRotation() + 1.5);
-                sprites[1].setRotation(sprites[1].getRotation() + 1.5);
+                sprites[0].setRotation(sprites[0].getRotation() + rotationSpeed);
+                sprites[1].setRotation(sprites[1].getRotation() + rotationSpeed);
             } else {
                 goingUp = false;
             }
         } else {
             if (sprites[0].getRotation() >= 70) {
-                sprites[0].setRotation(sprites[0].getRotation() - 1.5);
-                sprites[1].setRotation(sprites[1].getRotation() - 1.5);
+                sprites[0].setRotation(sprites[0].getRotation() - rotationSpeed);
+                sprites[1].setRotation(sprites[1].getRotation() - rotationSpeed);
             } else {
                 goingUp = true;
             }

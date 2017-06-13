@@ -8,13 +8,24 @@ public class Collisions {
     private boolean isFalling,movingDown;
     private int screenwidth,screenheight;
     private int blocksDown=2;
+    private Centerer centerer;
     public Collisions(int screenwidth,int screenheight)
     {
         this.screenwidth=screenwidth;
         this.screenheight=screenheight;
+        centerer = new Centerer(screenwidth);
     }
     public synchronized void check(Sprite[] sprites)
     {
+        centerer.check(sprites);
+        if(centerer.isMoving()) {
+            return;
+        }
+        if(sprites[3]!=null){
+            centerer.centerBloks(sprites);
+        }
+
+
         if(movingDown)
         {
             if(sprites[blocksDown-1].getY()>screenheight-GraphicEngine.BLOKSIZE*2)
@@ -27,10 +38,13 @@ public class Collisions {
                 sprites[blocksDown-1].setY(screenheight-GraphicEngine.BLOKSIZE);
                 cloneBlock(sprites,blocksDown-1,2);
                 cloneBlock(sprites,blocksDown,3);
+                sprites[4]=null;
                 blocksDown=3;
             }
 
         }
+
+
         if(blocksDown==4&&!movingDown)
         {
             moveOneBlockDown(sprites);
