@@ -3,15 +3,15 @@ package me.meczka.bloxx.graphics;
 import java.awt.Image;
 
 public class Sprite {
-	private int x, y,velX,velY,rotation;
+	private double x, y,velX,velY,rotation;
 	private boolean isYVectored,isXVectored,isRotating;
 	public static final int X = 0,Y = 1,BOTH = 2;
 	Image image;
-	public Sprite(int x,int y,int rotation,Image image)
+	public Sprite(double x,double y,double rotation,Image image)
 	{
 		this(x,y,rotation,image,true,true,false);
 	}
-	public Sprite(int x,int y,int rotation,Image image,boolean isXVectored,boolean isYVectored,boolean isRotating)
+	public Sprite(double x,double y,double rotation,Image image,boolean isXVectored,boolean isYVectored,boolean isRotating)
 	{
 		this.x=x;
 		this.y=y;
@@ -23,35 +23,35 @@ public class Sprite {
 		this.isYVectored=isYVectored;
 		this.isRotating=isRotating;
 	}
-	public void setVelocityX(int velX)
+	public void setVelocityX(double velX)
 	{
 		this.velX=velX;
 	}
-	public void setVelocityY(int velY)
+	public void setVelocityY(double velY)
 	{
 		this.velY=velY;
 	}
-	public int getVelocityX()
+	public double getVelocityX()
 	{
 		return velX;
 	}
-	public int getVelocityY()
+	public double getVelocityY()
 	{
 		return velY;
 	}
-	public void setX(int x)
+	public void setX(double x)
 	{
 		this.x=x;
 	}
-	public void setY(int y)
+	public void setY(double y)
 	{
 		this.y=y;
 	}
-	public int getX()
+	public double getX()
 	{
 		return x;
 	}
-	public int getY()
+	public double getY()
 	{
 		return y;
 	}
@@ -63,11 +63,11 @@ public class Sprite {
 	{
 		return image;
 	}
-	public int getRotation()
+	public double getRotation()
 	{
 		return rotation;
 	}
-	public void setRotation(int rotation)
+	public void setRotation(double rotation)
 	{
 		this.rotation=rotation;
 	}

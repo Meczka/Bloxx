@@ -13,7 +13,7 @@ public class Collisions {
         this.screenwidth=screenwidth;
         this.screenheight=screenheight;
     }
-    public void check(Sprite[] sprites)
+    public synchronized void check(Sprite[] sprites)
     {
         if(movingDown)
         {
@@ -25,8 +25,8 @@ public class Collisions {
                 }
                 sprites[blocksDown].setY(screenheight-GraphicEngine.BLOKSIZE*2);
                 sprites[blocksDown-1].setY(screenheight-GraphicEngine.BLOKSIZE);
-                cloneBlock(sprites,blocksDown,3);
                 cloneBlock(sprites,blocksDown-1,2);
+                cloneBlock(sprites,blocksDown,3);
                 blocksDown=3;
             }
 
@@ -37,8 +37,8 @@ public class Collisions {
         }
         if(sprites[0].getY()>sprites[blocksDown].getY()-GraphicEngine.BLOKSIZE)
         {
-            if(sprites[0].getX()>sprites[blocksDown].getX()&&sprites[0].getX()<sprites[blocksDown].getX()+GraphicEngine.BLOKSIZE
-                    ||sprites[0].getX()+GraphicEngine.BLOKSIZE>sprites[blocksDown].getX()&&sprites[0].getX()+GraphicEngine.BLOKSIZE<sprites[blocksDown].getX()+GraphicEngine.BLOKSIZE)
+            if(sprites[0].getX()>=sprites[blocksDown].getX()&&sprites[0].getX()<=sprites[blocksDown].getX()+GraphicEngine.BLOKSIZE
+                    ||sprites[0].getX()+GraphicEngine.BLOKSIZE>=sprites[blocksDown].getX()&&sprites[0].getX()+GraphicEngine.BLOKSIZE<=sprites[blocksDown].getX()+GraphicEngine.BLOKSIZE)
             {
                 sprites[0].setVelocityY(0);
                 sprites[0].setY(sprites[blocksDown].getY() - GraphicEngine.BLOKSIZE);
@@ -48,6 +48,7 @@ public class Collisions {
             }
             else
             {
+                sprites[0].setVelocityY(0);
                 isFalling=false;
             }
         }

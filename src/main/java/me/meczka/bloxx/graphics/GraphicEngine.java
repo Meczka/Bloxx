@@ -125,7 +125,7 @@ public class GraphicEngine extends GameCore implements MouseListener,MouseMotion
 
     }
 
-    public void StartFalling()
+    public synchronized void StartFalling()
     {
         sprites[0].setRotating(false);
         sprites[0].setVectored(Sprite.Y,true);
@@ -149,10 +149,10 @@ public class GraphicEngine extends GameCore implements MouseListener,MouseMotion
                     AffineTransform trans = new AffineTransform();
                     trans.rotate(Math.toRadians(sprites[i].getRotation()), sprites[i].getX() + sprites[i].getImage().getWidth(null) / 2, sprites[i].getY() + sprites[i].getImage().getHeight(null) / 2);
                     g.setTransform(trans);
-                    g.drawImage(sprites[i].getImage(), sprites[i].getX(), sprites[i].getY(), null);
+                    g.drawImage(sprites[i].getImage(), (int)sprites[i].getX(), (int)sprites[i].getY(), null);
                     g.setTransform(backup);
                 } else {
-                    g.drawImage(sprites[i].getImage(), sprites[i].getX(), sprites[i].getY(), null);
+                    g.drawImage(sprites[i].getImage(), (int)sprites[i].getX(), (int)sprites[i].getY(), null);
                 }
             }
         }
@@ -178,16 +178,16 @@ public class GraphicEngine extends GameCore implements MouseListener,MouseMotion
     {
         //Aktualizacja Kąta
         if (goingUp) {
-            if (sprites[0].getRotation() != 110) {
-                sprites[0].setRotation(sprites[0].getRotation() + 1);
-                sprites[1].setRotation(sprites[1].getRotation() + 1);
+            if (sprites[0].getRotation() <= 110) {
+                sprites[0].setRotation(sprites[0].getRotation() + 1.5);
+                sprites[1].setRotation(sprites[1].getRotation() + 1.5);
             } else {
                 goingUp = false;
             }
         } else {
-            if (sprites[0].getRotation() != 70) {
-                sprites[0].setRotation(sprites[0].getRotation() - 1);
-                sprites[1].setRotation(sprites[1].getRotation() - 1);
+            if (sprites[0].getRotation() >= 70) {
+                sprites[0].setRotation(sprites[0].getRotation() - 1.5);
+                sprites[1].setRotation(sprites[1].getRotation() - 1.5);
             } else {
                 goingUp = true;
             }
@@ -209,10 +209,10 @@ public class GraphicEngine extends GameCore implements MouseListener,MouseMotion
         {
             if(sprites[i]!=null) {
                 if (sprites[i].isVectored(Sprite.X)) {
-                    sprites[i].setX((int) (sprites[i].getX() + sprites[i].getVelocityX() * elapsedTime));
+                    sprites[i].setX( (sprites[i].getX() + sprites[i].getVelocityX() * elapsedTime));
                 }
                 if (sprites[i].isVectored(Sprite.Y)) {
-                    sprites[i].setY((int) (sprites[i].getY() + sprites[i].getVelocityY() * elapsedTime));
+                    sprites[i].setY( (sprites[i].getY() + sprites[i].getVelocityY() * elapsedTime));
                 }
             }
         }
