@@ -9,26 +9,25 @@ public class Collisions {
     private int screenwidth,screenheight;
     private int blocksDown=2;
     private Centerer centerer;
+    private Bujacz bujacz;
     public Collisions(int screenwidth,int screenheight)
     {
         this.screenwidth=screenwidth;
         this.screenheight=screenheight;
         centerer = new Centerer(screenwidth);
+        bujacz = new Bujacz(screenwidth);
     }
     public synchronized void check(Sprite[] sprites)
     {
+        if(!movingDown&&!centerer.isMoving()&&sprites[3]!=null)
+        {
+            bujacz.update(sprites);
+        }
         centerer.check(sprites);
-        if(centerer.isMoving()) {
-            return;
-        }
-        if(sprites[3]!=null){
-            centerer.centerBloks(sprites);
-        }
-
 
         if(movingDown)
         {
-            if(sprites[blocksDown-1].getY()>screenheight-GraphicEngine.BLOKSIZE*2)
+            if(sprites[blocksDown-1].getY()>screenheight-GraphicEngine.BLOKSIZE)
             {
                 movingDown=false;
                 for(int i=2;i<=blocksDown;i++) {
@@ -40,6 +39,9 @@ public class Collisions {
                 cloneBlock(sprites,blocksDown,3);
                 sprites[4]=null;
                 blocksDown=3;
+                centerer.centerBloks(sprites);
+                bujacz.addSpeed(centerer.getRoznica());
+                bujacz.setFirstTime(true);
             }
 
         }
@@ -76,7 +78,8 @@ public class Collisions {
         for(int i=2;i<=blocksDown;i++)
         {
             sprites[i].setVectored(Sprite.Y,true);
-            sprites[i].setVelocityY(1);
+            sprites[i].setVelocityY(0.2);
+            sprites[i].setVelocityX(0);
             movingDown=true;
         }
     }
