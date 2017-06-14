@@ -39,6 +39,16 @@ public class Centerer{
             isMoving=true;
         }
     }
+    public void calculateRoznica(Sprite[] sprites)
+    {
+        double x = sprites[2].getX();
+        if(x>center) {
+            roznica = sprites[3].getX() - sprites[2].getX();
+        }
+        else if(x<center) {
+            roznica = sprites[3].getX() - sprites[2].getX();
+        }
+    }
     public double getRoznica()
     {
         return roznica;

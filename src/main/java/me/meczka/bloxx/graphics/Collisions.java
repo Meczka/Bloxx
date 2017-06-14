@@ -10,12 +10,18 @@ public class Collisions {
     private int blocksDown=2;
     private Centerer centerer;
     private Bujacz bujacz;
+    private Counter counter;
     public Collisions(int screenwidth,int screenheight)
     {
         this.screenwidth=screenwidth;
         this.screenheight=screenheight;
         centerer = new Centerer(screenwidth);
         bujacz = new Bujacz(screenwidth);
+        counter = new Counter();
+    }
+    public Counter getCounter()
+    {
+        return counter;
     }
     public synchronized void check(Sprite[] sprites)
     {
@@ -38,8 +44,10 @@ public class Collisions {
                 cloneBlock(sprites,blocksDown-1,2);
                 cloneBlock(sprites,blocksDown,3);
                 sprites[4]=null;
+                counter.add();
                 blocksDown=3;
-                centerer.centerBloks(sprites);
+                //centerer.centerBloks(sprites);
+                centerer.calculateRoznica(sprites);
                 bujacz.addSpeed(centerer.getRoznica());
                 bujacz.setFirstTime(true);
             }
@@ -64,6 +72,7 @@ public class Collisions {
             }
             else
             {
+                counter.addNietrafione();
                 sprites[0].setVelocityY(0);
                 isFalling=false;
             }
@@ -80,6 +89,7 @@ public class Collisions {
             sprites[i].setVectored(Sprite.Y,true);
             sprites[i].setVelocityY(0.2);
             sprites[i].setVelocityX(0);
+
             movingDown=true;
         }
     }

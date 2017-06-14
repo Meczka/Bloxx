@@ -24,11 +24,11 @@ public class Bujacz {
             sprites[3].setVelocityX(speed);
             firstTime=false;
         }
-        if(sprites[2].getX()>center+200) {
+        if(sprites[2].getX()>center+120) {
             sprites[2].setVelocityX(-speed);
             sprites[3].setVelocityX(-speed);
         }
-        else if(sprites[2].getX()<center-200)
+        else if(sprites[2].getX()<center-120)
         {
             sprites[2].setVelocityX(speed);
             sprites[3].setVelocityX(speed);
@@ -54,7 +54,7 @@ public class Bujacz {
     }
     public double calculateSpeed()
     {
-        return sumaRoznica/1000;
+        return sumaRoznica/2000;
     }
     public void addSpeed(double roznica)
     {

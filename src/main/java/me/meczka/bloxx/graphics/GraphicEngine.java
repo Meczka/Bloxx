@@ -165,7 +165,8 @@ public class GraphicEngine extends GameCore implements MouseListener,MouseMotion
 
         g.drawOval(screen.getWidth()/2-circleDiameter/2, -screen.getHeight()/4, circleDiameter,circleDiameter);
 
-
+        g.drawString("Wynik: " + collisions.getCounter().getNumber(),20,20);
+        g.drawString("Nietrafione: "+collisions.getCounter().getNietrafione(),20,60);
 
         //trans.translate(sprites[0].getX(), sprites[0].getY());
 
