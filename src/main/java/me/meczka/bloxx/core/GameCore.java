@@ -22,6 +22,7 @@ public abstract  class GameCore {
 		}finally
 		{
 			screen.restoreScreen();
+			System.exit(1);
 		}
 	}
 	public void init()
